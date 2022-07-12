@@ -1,0 +1,30 @@
+{
+  "name": "fast",
+  "version": "1.0.0",
+  "description": "be",
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "concurrently \"tsc -w\" \"nodemon -q build/index.js\"",
+    "start": "node build/index.js"
+  },
+  "dependencies": {
+    "@fastify/jwt": "^6.2.0",
+    "@fastify/swagger": "^7.4.1",
+    "@prisma/client": "^4.0.0",
+    "@types/bcrypt": "^5.0.0",
+    "@types/fastify-jwt": "^0.8.1",
+    "bcrypt": "^5.0.1",
+    "fastify": "^4.2.0",
+    "fastify-plugin": "^3.0.1",
+    "fastify-swagger": "^5.2.0",
+    "fastify-zod": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "concurrently": "^7.2.2",
+    "nodemon": "^2.0.18",
+    "typescript": "^4.7.4"
+  }
+}

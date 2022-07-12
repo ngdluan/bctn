@@ -1,0 +1,204 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  name        String?
+  hash        String
+  role        String    @default("USER")
+  roleDetails String    @default("")
+  status      String?
+  verify      Boolean?
+  code        Int?
+  wrong       Int?
+  forget      Boolean?
+  iAt         DateTime  @default(now())
+  uAt         DateTime  @updatedAt
+  Comments    Comment[]
+  Posts       Post[]
+  Votes       Vote[]
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  lang       String?
+  title      String?
+  content    String?
+  feature    String?
+  postLink   String?   @unique
+  des        String?
+  tags       String?
+  category   String?
+  iAt        DateTime  @default(now())
+  uAt        DateTime  @updatedAt
+  uBy        DateTime?
+  read       Int?
+  like       Int?
+  userId     Int?
+  categoryId Int?
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  User       User?     @relation(fields: [userId], references: [id])
+  Comments   Comment[]
+}
+
+model Comment {
+  id      Int       @id @default(autoincrement())
+  userId  Int
+  postId  Int
+  reply   Int?
+  iAt     DateTime? @default(now())
+  uAt     DateTime  @updatedAt
+  content String?
+  Post    Post      @relation(fields: [postId], references: [id])
+  User    User      @relation(fields: [userId], references: [id])
+}
+
+model Category {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+  feature String?
+  Posts   Post[]
+}
+
+model Image {
+  id     Int      @id @default(autoincrement())
+  name   String?
+  width  Int?
+  height Int?
+  iAt    DateTime @default(now())
+  uAt    DateTime @updatedAt
+}
+
+model Product {
+  id           Int        @id @default(autoincrement())
+  name         String?
+  tags         String?
+  des          String?
+  pCategory    String?
+  productLink  String?
+  price        Int?
+  qty          Int?
+  qtyToWarning Int?
+  pre          Int?
+  available    Int?
+  capacity     String?
+  imgs         String?
+  feature      String?
+  iAt          DateTime?  @default(now())
+  uAt          DateTime?  @updatedAt
+  uBy          Int?
+  pcategoryId  Int?
+  Pcategory    Pcategory? @relation(fields: [pcategoryId], references: [id])
+  Carts        Cart[]
+  Lots         Lot[]
+}
+
+model Vote {
+  id     Int   @id @default(autoincrement())
+  userId Int?
+  User   User? @relation(fields: [userId], references: [id])
+}
+
+model Lot {
+  id              Int        @id @default(autoincrement())
+  productId       Int?
+  qty             Int?
+  iAt             DateTime?  @default(now())
+  uAt             DateTime?  @updatedAt
+  exAt            DateTime?
+  moveId          Int?
+  warehouseId     Int?
+  userWarehouseId Int?
+  Move            Move?      @relation(fields: [moveId], references: [id])
+  Product         Product?   @relation(fields: [productId], references: [id])
+  UserWarehouse   UserStore? @relation(fields: [userWarehouseId], references: [id])
+  Warehouse       Store?     @relation(fields: [warehouseId], references: [id])
+}
+
+model Move {
+  id    Int     @id @default(autoincrement())
+  name  String? @unique
+  lists String?
+  Lots  Lot[]
+}
+
+model Store {
+  id   Int     @id @default(autoincrement())
+  name String? @unique
+  Lots Lot[]
+}
+
+model UserStore {
+  id   Int     @id @default(autoincrement())
+  name String? @unique
+  Lots Lot[]
+}
+
+model Pcategory {
+  id       Int       @id @default(autoincrement())
+  name     String?
+  feature  String?
+  from     String?
+  to       String?
+  Products Product[]
+}
+
+model Cart {
+  id        Int       @id @default(autoincrement())
+  productId Int?
+  userId    Int?
+  type      String?
+  qty       Int?
+  hold      Boolean?
+  iAt       Int?
+  exAt      DateTime?
+  Product   Product?  @relation(fields: [productId], references: [id])
+}
+
+model Env {
+  id    Int    @id @default(autoincrement())
+  name  String
+  value String
+}
+
+model Setting {
+  id    Int    @id @default(autoincrement())
+  name  String
+  value String
+}
+
+model Menu {
+  id    Int    @id @default(autoincrement())
+  name  String
+  value String
+}
+
+model Error {
+  id      Int      @id @default(autoincrement())
+  iAt     DateTime @default(now())
+  uAt     DateTime @updatedAt
+  type    String?
+  from    String?
+  to      String?
+  content String?
+  err     String?
+}
+
+model Log {
+  id  Int      @id @default(autoincrement())
+  iAt DateTime @default(now())
+  uAt DateTime @updatedAt
+}
+
+model MultiLanguage {
+  id  Int      @id @default(autoincrement())
+  iAt DateTime @default(now())
+  uAt DateTime @updatedAt
+}
