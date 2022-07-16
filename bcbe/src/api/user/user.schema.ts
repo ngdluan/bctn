@@ -33,17 +33,13 @@ const userCreateSchema = z.object({
 
 const userCreateResponseSchema = z.object({
     id: z.number(),
-    hash: z.string(),
     ...userCore,
 }).passthrough()
 
 const userLoginSchema = z.object({
-    email: z.string({
-        required_error: JSON.stringify({
-            en: 'Email is required',
-            vi: 'Email là bắt buộc'
-        })
-    }).email(),
+    email: z.string().email().optional(),
+    tel: z.string().optional(),
+    userName: z.string().optional(),
     password: z.string(),
 })
 

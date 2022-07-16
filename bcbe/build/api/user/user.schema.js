@@ -33,16 +33,12 @@ const userCreateSchema = zod_1.z.object({
 }).passthrough();
 const userCreateResponseSchema = zod_1.z.object({
     id: zod_1.z.number(),
-    hash: zod_1.z.string(),
     ...userCore,
 }).passthrough();
 const userLoginSchema = zod_1.z.object({
-    email: zod_1.z.string({
-        required_error: JSON.stringify({
-            en: 'Email is required',
-            vi: 'Email là bắt buộc'
-        })
-    }).email(),
+    email: zod_1.z.string().email().optional(),
+    tel: zod_1.z.string().optional(),
+    userName: zod_1.z.string().optional(),
     password: zod_1.z.string(),
 });
 const userLoginResponseSchema = zod_1.z.object({
